@@ -3,9 +3,7 @@ const fs = require('fs');
 const webpack = require('webpack');
 
 module.exports = {
-  entry: {
-    user: '/Users/kapnickm/dev/preact-test/client/App.jsx',
-  },
+  entry: '/Users/kapnickm/dev/preact-test/client/App.jsx',
   output: {
     path: '/Users/kapnickm/dev/preact-test/public-gen/js',
     filename: 'bundle.js',
