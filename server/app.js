@@ -1,23 +1,35 @@
-const koa = require('koa');
-const app = new koa();
-const route = require('koa-route');
-var serve = require('koa-static-server')
+const express = require('express');
+const sassify = require('node-sass-middleware');
+const sessions = require('client-sessions');
+const bodyParser = require('body-parser');
+const favicon = require('serve-favicon');
+const path = require('path');
+const config = require('config');
+const loginFilter = require('./filters/loginFilter.js');
+const appendSubdomain = require('./middleware/subdomain.js');
+const flash = require('connect-flash');
+const csrfProtection = require('csurf')();
+const proxy = require('./utils/proxyRoute.js');
+const app = express();
 
-const Pug = require('koa-pug');
-const pug = new Pug({
-  viewPath: '../views',
-  debug: false,
-  pretty: false,
-  compileDebug: false,
-  app: app,
-});
+const _directory = _path => path.join(__dirname, _path);
 
-app.use(serve({
-  rootDir: '../public-gen'
+app.enable('trust proxy');
+app.set('view engine', 'jade');
+
+//starter middleware
+app.use(favicon(_directory('../public/favicon.ico')));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+//public assets
+app.use('/public/css', sassify({
+  src: _directory('../scss'),
+  dest: _directory('../public-gen/css'),
+  outputStyle: 'compressed'
 }));
+app.use('/public', express.static(_directory('../public')));
+app.use('/public', express.static(_directory('../public-gen')));
 
-app.use(route.get('/', ctx => {
-    ctx.render('index');
-}));
-
-module.exports = app;
+//root
+app.get('/', (req, res) => res.render('index'));

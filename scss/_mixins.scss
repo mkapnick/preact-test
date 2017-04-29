@@ -1,0 +1,105 @@
+@mixin modalBodyContentAnimationIn() {
+  animation-name: modalBodyContentAnimationIn;
+  animation-duration: 980ms;
+  animation-timing-function: linear;
+  animation-delay: 500ms;
+  animation-iteration-count: initial;
+  animation-direction: initial;
+  animation-fill-mode: forwards;
+  animation-play-state: initial;
+  opacity: 0;
+}
+
+@mixin modalFooterAnimationIn() {
+  animation-name: modalFooterAnimationIn;
+  animation-duration: 888ms;
+  animation-timing-function: linear;
+  animation-delay: 3000ms;
+  animation-iteration-count: initial;
+  animation-direction: initial;
+  animation-fill-mode: forwards;
+  animation-play-state: initial;
+  opacity: 0;
+}
+
+@mixin modalHeaderAnimationIn() {
+  animation-name: modalHeaderAnimationIn;
+  animation-duration: 925ms;
+  animation-timing-function: linear;
+  animation-delay: 100ms;
+  animation-iteration-count: initial;
+  animation-direction: initial;
+  animation-fill-mode: forwards;
+  animation-play-state: initial;
+  opacity: 0;
+}
+
+@mixin cardAnimationIn() {
+  animation-name: cardAnimationIn;
+  animation-duration: 300ms;
+  animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1.1);
+  animation-delay: 0ms;
+  animation-iteration-count: initial;
+  animation-direction: initial;
+  animation-fill-mode: forwards;
+  animation-play-state: initial;
+  opacity: 0;
+}
+
+@mixin responsiveFont($responsive, $min, $max: false, $fallback: false) {
+  $responsive-unitless: $responsive / ($responsive - $responsive + 1);
+  $dimension: if(unit($responsive) == 'vh', 'height', 'width');
+  $min-breakpoint: $min / $responsive-unitless * 100;
+
+  @media (max-#{$dimension}: #{$min-breakpoint}) {
+    font-size: $min;
+  }
+
+  @if $max {
+    $max-breakpoint: $max / $responsive-unitless * 100;
+
+    @media (min-#{$dimension}: #{$max-breakpoint}) {
+      font-size: $max;
+    }
+  }
+
+  @if $fallback {
+    font-size: $fallback;
+  }
+
+  font-size: $responsive;
+}
+
+@mixin responsiveWidth($responsive, $min, $max: false, $fallback: false) {
+  $responsive-unitless: $responsive / ($responsive - $responsive + 1);
+  $dimension: if(unit($responsive) == 'vh', 'height', 'width');
+  $min-breakpoint: $min / $responsive-unitless * 100;
+
+  @media (max-#{$dimension}: #{$min-breakpoint}) {
+    width: $min;
+  }
+
+  @if $max {
+    $max-breakpoint: $max / $responsive-unitless * 100;
+
+    @media (min-#{$dimension}: #{$max-breakpoint}) {
+      width: $max;
+    }
+  }
+
+  @if $fallback {
+    width: $fallback;
+  }
+
+  width: $responsive;
+}
+
+@function calculateRem($size) {
+  $remSize: $size / 16px;
+  @return #{$remSize}rem;
+}
+
+@mixin fontSize($size) {
+  font-size: $size; //Fallback in px
+  font-size: calculateRem($size);
+}
